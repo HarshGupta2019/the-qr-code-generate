@@ -1,0 +1,6 @@
+{
+  "name": "The QR Code Generate",
+  "description": "Generate free, high-resolution customizable QR codes for URLs, text, vCards, Wi-Fi, WhatsApp, social links, and files with custom logos, frames, styles, and high-quality vector downloads.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
