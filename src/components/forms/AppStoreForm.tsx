@@ -134,6 +134,21 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({ payment, setPayment })
         />
       </div>
 
+      {payment.provider === 'upi' && (
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300 mb-1">
+            Payee Name
+          </label>
+          <input
+            type="text"
+            value={payment.payeeName || ''}
+            onChange={(e) => handleChange('payeeName', e.target.value)}
+            placeholder="Merchant name"
+            className="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-semibold text-zinc-300 mb-1">

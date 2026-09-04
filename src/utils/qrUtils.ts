@@ -49,6 +49,26 @@ export const DEFAULT_STYLE_OPTIONS: QrStyleOptions = {
   margin: 2,
 };
 
+function escapeVCardValue(value: string): string {
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,')
+    .replace(/\r?\n/g, '\\n');
+}
+
+function normalizePhone(value: string): string {
+  const trimmed = value.trim();
+  const digits = trimmed.replace(/\D/g, '');
+  return trimmed.startsWith('+') ? `+${digits}` : digits;
+}
+
+function normalizeHttpUrl(value: string): string {
+  const trimmed = value.trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return `https://${trimmed}`;
+}
+
 /**
  * Format payload according to data type
  */
@@ -81,7 +101,7 @@ export function formatQrPayload(
       return raw;
     }
     case 'text':
-      return data.text || 'Hello World';
+      return data.text ?? '';
 
     case 'vcard': {
       const v = data.vcard;
@@ -89,19 +109,19 @@ export function formatQrPayload(
       const lines = [
         'BEGIN:VCARD',
         'VERSION:3.0',
-        `N:${v.lastName || ''};${v.firstName || ''};;;`,
-        `FN:${[v.firstName, v.lastName].filter(Boolean).join(' ') || 'Contact'}`,
+        `N:${escapeVCardValue(v.lastName || '')};${escapeVCardValue(v.firstName || '')};;;`,
+        `FN:${escapeVCardValue([v.firstName, v.lastName].filter(Boolean).join(' ') || 'Contact')}`,
       ];
-      if (v.organization) lines.push(`ORG:${v.organization}`);
-      if (v.jobTitle) lines.push(`TITLE:${v.jobTitle}`);
+      if (v.organization) lines.push(`ORG:${escapeVCardValue(v.organization)}`);
+      if (v.jobTitle) lines.push(`TITLE:${escapeVCardValue(v.jobTitle)}`);
       if (v.phoneCell) lines.push(`TEL;TYPE=CELL:${v.phoneCell}`);
       if (v.phoneWork) lines.push(`TEL;TYPE=WORK:${v.phoneWork}`);
       if (v.email) lines.push(`EMAIL:${v.email}`);
-      if (v.url) lines.push(`URL:${v.url.startsWith('http') ? v.url : 'https://' + v.url}`);
+      if (v.url) lines.push(`URL:${normalizeHttpUrl(v.url)}`);
       if (v.street || v.city || v.state || v.zip || v.country) {
-        lines.push(`ADR;TYPE=WORK:;;${v.street || ''};${v.city || ''};${v.state || ''};${v.zip || ''};${v.country || ''}`);
+        lines.push(`ADR;TYPE=WORK:;;${[v.street, v.city, v.state, v.zip, v.country].map((part) => escapeVCardValue(part || '')).join(';')}`);
       }
-      if (v.note) lines.push(`NOTE:${v.note}`);
+      if (v.note) lines.push(`NOTE:${escapeVCardValue(v.note)}`);
       lines.push('END:VCARD');
       return lines.join('\n');
     }
@@ -134,7 +154,7 @@ export function formatQrPayload(
     case 'whatsapp': {
       const wa = data.whatsapp;
       if (!wa) return 'https://wa.me/1234567890';
-      const cleanNumber = (wa.countryCode + wa.phoneNumber).replace(/\D/g, '');
+      const cleanNumber = normalizePhone(`${wa.countryCode}${wa.phoneNumber}`).replace(/^\+/, '');
       const encodedMsg = wa.message ? `?text=${encodeURIComponent(wa.message)}` : '';
       return `https://wa.me/${cleanNumber}${encodedMsg}`;
     }
@@ -157,7 +177,8 @@ export function formatQrPayload(
     case 'sms': {
       const sms = data.sms;
       if (!sms) return 'SMSTO:+1234567890:Hello';
-      return `SMSTO:${sms.phoneNumber || ''}:${sms.message || ''}`;
+      const number = normalizePhone(sms.phoneNumber || '');
+      return `sms:${number}?body=${encodeURIComponent(sms.message || '')}`;
     }
 
     case 'event': {
@@ -178,12 +199,12 @@ export function formatQrPayload(
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
         'BEGIN:VEVENT',
-        `SUMMARY:${ev.title || 'Event'}`,
+        `SUMMARY:${escapeVCardValue(ev.title || 'Event')}`,
       ];
       if (start) lines.push(ev.allDay ? `DTSTART;VALUE=DATE:${start}` : `DTSTART:${start}`);
       if (end) lines.push(ev.allDay ? `DTEND;VALUE=DATE:${end}` : `DTEND:${end}`);
-      if (ev.location) lines.push(`LOCATION:${ev.location}`);
-      if (ev.description) lines.push(`DESCRIPTION:${ev.description}`);
+      if (ev.location) lines.push(`LOCATION:${escapeVCardValue(ev.location)}`);
+      if (ev.description) lines.push(`DESCRIPTION:${escapeVCardValue(ev.description)}`);
       lines.push('END:VEVENT');
       lines.push('END:VCALENDAR');
       return lines.join('\n');
@@ -192,8 +213,8 @@ export function formatQrPayload(
     case 'location': {
       const loc = data.location;
       if (!loc) return 'geo:37.7749,-122.4194';
-      if (loc.latitude && loc.longitude) {
-        return `https://maps.google.com/?q=${loc.latitude},${loc.longitude}`;
+      if (loc.latitude !== '' && loc.longitude !== '' && loc.latitude != null && loc.longitude != null) {
+        return `geo:${loc.latitude},${loc.longitude}`;
       }
       if (loc.query || loc.address) {
         return `https://maps.google.com/?q=${encodeURIComponent(loc.query || loc.address)}`;
@@ -244,7 +265,14 @@ export function formatQrPayload(
         case 'cashapp':
           return `https://cash.app/$${p.identifier.replace(/^\$/, '')}${p.amount ? '/' + p.amount : ''}`;
         case 'upi':
-          return `upi://pay?pa=${p.identifier}&pn=Merchant&am=${p.amount || '0'}&cu=INR&tn=${encodeURIComponent(p.note || 'Payment')}`;
+          const upiParams = new URLSearchParams({
+            pa: p.identifier.trim(),
+            pn: p.payeeName?.trim() || 'Merchant',
+            cu: 'INR',
+          });
+          if (p.amount) upiParams.set('am', p.amount);
+          if (p.note) upiParams.set('tn', p.note);
+          return `upi://pay?${upiParams.toString()}`;
         default:
           return `https://paypal.me/${p.identifier}`;
       }
@@ -259,18 +287,8 @@ export function formatQrPayload(
  * Generate standard QR matrix & modules
  */
 export async function getQrMatrix(text: string, errorCorrectionLevel: 'L' | 'M' | 'Q' | 'H' = 'M', _margin = 2) {
-  try {
-    const qrData = QRCode.create(text || ' ', {
-      errorCorrectionLevel,
-    });
-    return qrData.modules;
-  } catch (err) {
-    console.error('QR creation error', err);
-    const fallback = QRCode.create('https://the-qrcode-generator.com', {
-      errorCorrectionLevel: 'M',
-    });
-    return fallback.modules;
-  }
+  const qrData = QRCode.create(text || ' ', { errorCorrectionLevel });
+  return qrData.modules;
 }
 
 /**
@@ -423,8 +441,11 @@ export async function renderQrToCanvas(
   }
   ctx.restore();
 
-  // Calculate module dimension
-  const moduleSize = targetSize / moduleCount;
+  // Reserve a real quiet zone around the matrix so scanners can separate it from nearby artwork.
+  const quietZone = Math.max(0, Math.round(style.margin));
+  const moduleSize = targetSize / (moduleCount + quietZone * 2);
+  const matrixX = qrX + quietZone * moduleSize;
+  const matrixY = qrY + quietZone * moduleSize;
 
   // Build foreground style / gradient
   let fgStyle: string | CanvasGradient = style.dotColor;
@@ -460,9 +481,9 @@ export async function renderQrToCanvas(
       const isDark = matrix.get(row, col);
       if (!isDark) continue;
 
-      const isFinder = isFinderPattern(row, col, moduleCount, style.margin);
-      const cellX = qrX + col * moduleSize;
-      const cellY = qrY + row * moduleSize;
+      const isFinder = isFinderPattern(row, col, moduleCount, 0);
+      const cellX = matrixX + col * moduleSize;
+      const cellY = matrixY + row * moduleSize;
 
       if (isFinder) {
         // Render finder eyes with custom corner eye styles
@@ -784,13 +805,14 @@ export async function downloadQrSvg(
   const matrix = await getQrMatrix(content, style.errorCorrectionLevel, style.margin);
   const size = matrix.size;
   const scale = 10;
-  const total = size * scale;
+  const quietZone = Math.max(0, Math.round(style.margin));
+  const total = (size + quietZone * 2) * scale;
 
   let rects = '';
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
       if (matrix.get(r, c)) {
-        rects += `<rect x="${c * scale}" y="${r * scale}" width="${scale}" height="${scale}" fill="${style.dotColor}" />\n`;
+        rects += `<rect x="${(c + quietZone) * scale}" y="${(r + quietZone) * scale}" width="${scale}" height="${scale}" fill="${style.dotColor}" />\n`;
       }
     }
   }

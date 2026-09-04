@@ -102,6 +102,7 @@ export function useQRGenerator(initialType: QrDataType = 'url') {
   const [payment, setPayment] = useState<PaymentData>({
     provider: 'paypal',
     identifier: 'merchantsample',
+    payeeName: 'Merchant',
     amount: '25.00',
     note: 'Thank you for your business!',
   });

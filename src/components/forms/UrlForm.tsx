@@ -23,6 +23,16 @@ export const UrlForm: React.FC<UrlFormProps> = ({
   setIsDynamic,
 }) => {
   const [copied, setCopied] = React.useState(false);
+  const normalizedUrl = url.trim() ? (url.trim().startsWith('//') ? `https:${url.trim()}` : /^https?:\/\//i.test(url.trim()) ? url.trim() : `https://${url.trim()}`) : '';
+  let isValidUrl = true;
+  if (url.trim()) {
+    try {
+      const parsed = new URL(normalizedUrl);
+      isValidUrl = Boolean(parsed.hostname) && ['http:', 'https:'].includes(parsed.protocol);
+    } catch {
+      isValidUrl = false;
+    }
+  }
 
   const handleCopy = () => {
     if (!url) return;
@@ -74,7 +84,9 @@ export const UrlForm: React.FC<UrlFormProps> = ({
           </div>
         </div>
         <p className="mt-1.5 text-xs text-zinc-400 flex items-center gap-1">
-          <span>Tip: Always include <code className="text-blue-400 font-mono">https://</code> for reliable scanning across all mobile camera apps.</span>
+          <span>
+            {isValidUrl ? <>Tip: Always include <code className="text-blue-400 font-mono">https://</code> for reliable scanning across all mobile camera apps.</> : <span className="text-amber-400">Enter a valid HTTP or HTTPS URL, including a hostname.</span>}
+          </span>
         </p>
       </div>
 

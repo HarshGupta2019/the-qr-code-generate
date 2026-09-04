@@ -131,6 +131,7 @@ export interface AppStoreData {
 export interface PaymentData {
   provider: 'paypal' | 'venmo' | 'cashapp' | 'upi';
   identifier: string;
+  payeeName?: string;
   amount: string;
   note: string;
 }
