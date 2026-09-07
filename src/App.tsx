@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from './components/HomePage';
 import { QRCodePage } from './components/QRCodePage';
 import { ScrollToTop } from './components/ScrollToTop';
-import { QR_TYPE_CONFIGS } from './data/qrTypeConfigs';
+import { PDF_QR_CONFIG, QR_TYPE_CONFIGS } from './data/qrTypeConfigs';
+import { InformationPage } from './components/InformationPage';
 
 export function App() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -28,6 +29,11 @@ export function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
+        <Route path="/about" element={<InformationPage kind="about" darkMode={darkMode} setDarkMode={setDarkMode} />} />
+        <Route path="/contact" element={<InformationPage kind="contact" darkMode={darkMode} setDarkMode={setDarkMode} />} />
+        <Route path="/privacy-policy" element={<InformationPage kind="privacy" darkMode={darkMode} setDarkMode={setDarkMode} />} />
+        <Route path="/terms-and-conditions" element={<InformationPage kind="terms" darkMode={darkMode} setDarkMode={setDarkMode} />} />
+        <Route path="/disclaimer" element={<InformationPage kind="disclaimer" darkMode={darkMode} setDarkMode={setDarkMode} />} />
         {/* Main Home Page / All-in-One QR Code Generator */}
         <Route
           path="/"
@@ -222,6 +228,10 @@ export function App() {
               setDarkMode={setDarkMode}
             />
           }
+        />
+        <Route
+          path="/pdf-qr-code"
+          element={<QRCodePage config={PDF_QR_CONFIG} darkMode={darkMode} setDarkMode={setDarkMode} />}
         />
 
         {/* Fallback to Home */}

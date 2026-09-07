@@ -105,6 +105,7 @@ export function useQRGenerator(initialType: QrDataType = 'url') {
     payeeName: 'Merchant',
     amount: '25.00',
     note: 'Thank you for your business!',
+    reference: '',
   });
 
   // Style State

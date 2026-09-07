@@ -93,6 +93,17 @@ export const Footer: React.FC<FooterProps> = ({ onSelectType, onOpenDynamicModal
             </ul>
           </div>
 
+          <div>
+            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white mb-3">Site Information</h4>
+            <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+              <li><Link to="/about" className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">About</Link></li>
+              <li><Link to="/contact" className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Contact</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-and-conditions" className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Terms &amp; Conditions</Link></li>
+              <li><Link to="/disclaimer" className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">Disclaimer</Link></li>
+            </ul>
+          </div>
+
           {/* Quick Info & Compliance */}
           <div>
             <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white mb-3">

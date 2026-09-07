@@ -2,6 +2,7 @@ import React from 'react';
 import { QrCode, Scan, Layers, History, Sparkles, Moon, Sun, Info } from 'lucide-react';
 import { LanguageSelector } from './LanguageSelector';
 import { useLanguage } from '../i18n/LanguageContext';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   activeTab: 'generator' | 'scanner' | 'batch' | 'history';
@@ -54,6 +55,9 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Desktop Navigation Tabs */}
           <nav className="hidden md:flex items-center gap-1.5 sm:gap-2">
+            <Link to="/" className="px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-sky-100/70 dark:hover:bg-slate-800 transition-all">Home</Link>
+            <Link to="/about" className="px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-sky-100/70 dark:hover:bg-slate-800 transition-all">About</Link>
+            <Link to="/contact" className="px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-sky-100/70 dark:hover:bg-slate-800 transition-all">Contact</Link>
             <button
               id="nav-tab-generator"
               onClick={() => setActiveTab('generator')}

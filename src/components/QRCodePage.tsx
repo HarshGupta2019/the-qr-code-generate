@@ -58,7 +58,7 @@ export const QRCodePage: React.FC<QRCodePageProps> = ({
         savedCount={qrGen.savedItems.length}
         darkMode={darkMode}
         setDarkMode={setDarkMode}
-        onOpenScannerModal={() => setIsScannerOpen(true)}
+        onOpenDynamicModal={() => setIsScannerOpen(true)}
       />
 
       {/* 3. Main Page Content */}

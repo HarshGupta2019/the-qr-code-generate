@@ -134,6 +134,7 @@ export interface PaymentData {
   payeeName?: string;
   amount: string;
   note: string;
+  reference?: string;
 }
 
 export interface QrStyleOptions {

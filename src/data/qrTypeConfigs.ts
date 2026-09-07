@@ -896,6 +896,44 @@ export function getQRTypeByRoute(pathname: string): QRTypeConfig | undefined {
   // Aliases for SEO variations
   if (clean === 'upi-qr-code') return QR_TYPE_CONFIGS.payment;
   if (clean === 'instagram-qr-code') return QR_TYPE_CONFIGS.social;
+  if (clean === 'pdf-qr-code') return PDF_QR_CONFIG;
   
   return undefined;
 }
+
+export const PDF_QR_CONFIG: QRTypeConfig = {
+  ...QR_TYPE_CONFIGS.url,
+  route: '/pdf-qr-code',
+  slug: 'pdf-qr-code',
+  title: 'PDF QR Code Generator',
+  h1: 'Free PDF QR Code Generator – Share Documents by Scan',
+  navLabel: 'PDF Document',
+  breadcrumbLabel: 'PDF QR Code',
+  metaTitle: 'PDF QR Code Generator – Create a QR Code for a PDF',
+  metaDescription: 'Create a QR code that opens a hosted PDF document. Paste the public PDF link, test it, and download a high-resolution QR code.',
+  intro: 'A PDF QR code is a URL QR code that points to a PDF hosted online. It gives readers a quick way to open a menu, catalog, guide, report, or instruction sheet from a printed page or screen.',
+  howItWorks: 'The QR code stores the public HTTPS address of the PDF. A phone scans that address and opens it in the device browser or its configured PDF viewer; the document must remain available at that address.',
+  steps: [
+    'Upload your PDF to a service you control or trust and copy its public HTTPS link.',
+    'Paste the complete PDF link into the generator.',
+    'Customize the code while keeping strong contrast and a clear quiet zone.',
+    'Scan-test the code from the preview and confirm the document opens on a phone.',
+    'Download the QR code as PNG, SVG, or PDF for your printed material.',
+  ],
+  useCases: [
+    { title: 'Menus and Catalogs', description: 'Let visitors open the current menu or product catalog without printing every page.' },
+    { title: 'Guides and Instructions', description: 'Connect packaging, equipment, or classroom materials to a detailed PDF guide.' },
+    { title: 'Reports and Event Handouts', description: 'Share a long report, agenda, or speaker handout from a compact printed sign.' },
+  ],
+  benefits: [
+    'Makes a long document accessible from a small printed space.',
+    'Uses a direct link so the destination can be tested before distribution.',
+    'Supports high-resolution SVG, PNG, and PDF downloads.',
+    'Works with standard smartphone cameras when the link is public and reachable.',
+  ],
+  faqs: [
+    { question: 'Does the PDF need to be hosted online?', answer: 'Yes. A QR code cannot contain a full document reliably for normal sharing; it stores a link to a document that a phone can reach.' },
+    { question: 'Can I replace the PDF later?', answer: 'A static code keeps its original link. You can replace the file at that same URL, or use a redirect you control when you need a changeable destination.' },
+    { question: 'Can I download the PDF QR code?', answer: 'Yes. The existing generator download controls can produce PNG, SVG, and PDF versions of the QR code.' },
+  ],
+};

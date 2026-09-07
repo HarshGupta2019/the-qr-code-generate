@@ -176,6 +176,21 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({ payment, setPayment })
           />
         </div>
       </div>
+
+      {payment.provider === 'upi' && (
+        <div>
+          <label className="block text-xs font-semibold text-zinc-300 mb-1">
+            Transaction / Reference ID (Optional)
+          </label>
+          <input
+            type="text"
+            value={payment.reference || ''}
+            onChange={(e) => handleChange('reference', e.target.value)}
+            placeholder="Order-12345"
+            className="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-xs font-mono text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          />
+        </div>
+      )}
     </div>
   );
 };

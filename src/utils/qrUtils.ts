@@ -95,7 +95,9 @@ export function formatQrPayload(
     case 'url': {
       let raw = (data.url || '').trim();
       if (!raw) return 'https://example.com';
-      if (!/^https?:\/\//i.test(raw) && !raw.startsWith('//')) {
+      if (raw.startsWith('//')) {
+        raw = 'https:' + raw;
+      } else if (!/^https?:\/\//i.test(raw)) {
         raw = 'https://' + raw;
       }
       return raw;
@@ -170,7 +172,7 @@ export function formatQrPayload(
     }
 
     case 'phone': {
-      const phone = (data.phone || '').trim();
+      const phone = normalizePhone(data.phone || '');
       return phone ? `tel:${phone}` : 'tel:+1234567890';
     }
 
@@ -225,7 +227,7 @@ export function formatQrPayload(
     case 'crypto': {
       const cr = data.crypto;
       if (!cr) return 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa';
-      const prefix = cr.currency.toLowerCase();
+      const prefix = cr.currency === 'BTC' ? 'bitcoin' : cr.currency === 'ETH' ? 'ethereum' : cr.currency.toLowerCase();
       let uri = `${prefix}:${cr.address || ''}`;
       const params = new URLSearchParams();
       if (cr.amount) params.append('amount', cr.amount);
@@ -242,10 +244,10 @@ export function formatQrPayload(
       if (s.links.length === 1) {
         return s.links[0].url;
       }
-      // Combine multiple links into a structured landing query
+      // A multi-link landing page needs a real hosted destination. Until one is configured,
+      // keep the QR directly scannable by using the first valid profile URL.
       const validLinks = s.links.filter((l) => l.url);
-      if (validLinks.length === 1) return validLinks[0].url;
-      return `https://theqrcodegenerate.app/p?title=${encodeURIComponent(s.title || 'My Links')}&links=${encodeURIComponent(JSON.stringify(validLinks))}`;
+      return validLinks[0]?.url || 'https://linktr.ee/example';
     }
 
     case 'app': {
@@ -272,6 +274,7 @@ export function formatQrPayload(
           });
           if (p.amount) upiParams.set('am', p.amount);
           if (p.note) upiParams.set('tn', p.note);
+          if (p.reference) upiParams.set('tr', p.reference);
           return `upi://pay?${upiParams.toString()}`;
         default:
           return `https://paypal.me/${p.identifier}`;
@@ -487,7 +490,7 @@ export async function renderQrToCanvas(
 
       if (isFinder) {
         // Render finder eyes with custom corner eye styles
-        const finderPart = getFinderPart(row, col, moduleCount, style.margin);
+        const finderPart = getFinderPart(row, col, moduleCount, 0);
         ctx.save();
         if (finderPart === 'inner') {
           ctx.fillStyle = style.cornerDotColor || style.dotColor;

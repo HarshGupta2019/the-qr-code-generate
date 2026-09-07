@@ -17,6 +17,7 @@ import { AdPlaceholder } from './ads/AdPlaceholder';
 import { Quote, Sparkles, ArrowRight } from 'lucide-react';
 import { QR_TYPE_CONFIGS } from '../data/qrTypeConfigs';
 import { Link } from 'react-router-dom';
+import { PageSEO } from './seo/PageSEO';
 
 interface HomePageProps {
   darkMode: boolean;
@@ -36,6 +37,7 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors font-['Plus_Jakarta_Sans',sans-serif]">
+      <PageSEO title="Free QR Code Generator | The QR Code Generate" description="Create free QR codes for websites, Wi-Fi, WhatsApp, UPI, Instagram, PDFs, contacts, and more with browser-based downloads." path="/" />
       {/* Header Bar */}
       <Header
         activeTab={activeTab}
@@ -149,6 +151,28 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
               format="horizontal"
               className="mt-8 mb-4"
             />
+
+            <section className="bg-white/90 dark:bg-slate-900/90 rounded-2xl p-6 sm:p-8 border border-sky-200/80 dark:border-slate-800 shadow-sm space-y-6">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">Free QR Code Generator</h1>
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  QR codes are two-dimensional barcodes that let a phone open information quickly. Use this free QR code generator to create website, Wi-Fi, WhatsApp, UPI, Instagram, PDF, contact, and other useful codes directly in your browser. Enter your information, review the preview, test the result with a phone, and download it for digital use or printing.
+                </p>
+              </div>
+              <div>
+                <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">QR Code Types</h2>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {[
+                    ['URL QR', '/url-qr-code'], ['Wi-Fi QR', '/wifi-qr-code'], ['WhatsApp QR', '/whatsapp-qr-code'],
+                    ['UPI QR', '/upi-qr-code'], ['Instagram QR', '/instagram-qr-code'], ['PDF QR', '/pdf-qr-code'], ['vCard QR', '/vcard-qr-code'],
+                  ].map(([label, route]) => (
+                    <Link key={route} to={route} className="rounded-xl border border-sky-200 dark:border-sky-800 px-3 py-2 text-xs font-bold text-sky-700 dark:text-sky-300 hover:bg-sky-50 dark:hover:bg-sky-950/50 transition-colors">
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </section>
 
             {/* Explore All 14 Dedicated Generator Pages */}
             <RelatedQRTools currentType={qrGen.selectedType} />

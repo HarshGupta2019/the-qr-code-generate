@@ -23,6 +23,10 @@ export const LocationForm: React.FC<LocationFormProps> = ({ location, setLocatio
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const handleChange = (field: keyof LocationData, value: string) => {
+    if (field === 'address') {
+      setLocation((prev) => ({ ...prev, address: value, query: value, latitude: '', longitude: '' }));
+      return;
+    }
     setLocation((prev) => ({ ...prev, [field]: value }));
   };
 
