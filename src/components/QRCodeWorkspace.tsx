@@ -185,7 +185,6 @@ export const QRCodeWorkspace: React.FC<QRCodeWorkspaceProps> = ({
               payload={currentPayload}
               dataType={selectedType}
               style={style}
-              dataSummary={dataSummary}
               onSaveToHistory={onSaveToHistory}
               onOpenPrintModal={onOpenPrintModal}
             />
@@ -196,8 +195,7 @@ export const QRCodeWorkspace: React.FC<QRCodeWorkspaceProps> = ({
       {/* Bottom Step 2: Styling, Color, Frames & Quality Customizer */}
       <QrCustomizer
         style={style}
-        onChangeStyle={setStyle}
-        currentDataType={selectedType}
+        setStyle={setStyle}
       />
     </div>
   );

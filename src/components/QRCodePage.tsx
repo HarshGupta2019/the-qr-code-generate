@@ -146,7 +146,7 @@ export const QRCodePage: React.FC<QRCodePageProps> = ({
       <QrScannerModal
         isOpen={isScannerOpen}
         onClose={() => setIsScannerOpen(false)}
-        onApplyDecoded={(text) => {
+        onLoadIntoGenerator={(text) => {
           qrGen.handleLoadScannedContent(text);
           setIsScannerOpen(false);
         }}
@@ -156,14 +156,10 @@ export const QRCodePage: React.FC<QRCodePageProps> = ({
         isOpen={isPrintOpen}
         onClose={() => setIsPrintOpen(false)}
         payload={qrGen.currentPayload}
-        dataType={config.type}
         style={qrGen.style}
-        title={config.title}
       />
 
       <HistoryDrawer
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
         items={qrGen.savedItems}
         onSelectItem={(item) => {
           qrGen.handleLoadSavedItem(item);

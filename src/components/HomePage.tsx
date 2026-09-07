@@ -198,8 +198,6 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
         {/* TAB 4: SAVED HISTORY */}
         {activeTab === 'history' && (
           <HistoryDrawer
-            isOpen={true}
-            onClose={() => setActiveTab('generator')}
             items={qrGen.savedItems}
             onSelectItem={(item) => {
               qrGen.handleLoadSavedItem(item);
@@ -215,7 +213,7 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
       <QrScannerModal
         isOpen={isScannerOpen}
         onClose={() => setIsScannerOpen(false)}
-        onApplyDecoded={(text) => {
+        onLoadIntoGenerator={(text) => {
           qrGen.handleLoadScannedContent(text);
           setIsScannerOpen(false);
           setActiveTab('generator');
@@ -226,7 +224,6 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
         isOpen={isPrintOpen}
         onClose={() => setIsPrintOpen(false)}
         payload={qrGen.currentPayload}
-        dataType={qrGen.selectedType}
         style={qrGen.style}
       />
 
