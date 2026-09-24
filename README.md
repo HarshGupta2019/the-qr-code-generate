@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# The QR Code Generate
 
-# Run and deploy your AI Studio app
+A simple and fast QR Code Generator.
 
-This contains everything you need to run your app locally.
+Generate QR codes for:
+- URL
+- WiFi
+- WhatsApp
+- UPI
+- Instagram
+- PDF
+- vCard
 
-View your app in AI Studio: https://ai.studio/apps/dad9bfbf-2b57-4dcf-9b05-fae413c30a29
+## Features
 
-## Run Locally
+- Fast QR code generation
+- Easy to use
+- Mobile friendly
+- Free to use
+- Download QR codes
 
-**Prerequisites:**  Node.js
+## Live Website
 
+https://the-qr-code-generate.vercel.app/
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Made with ❤️ by Harsh Gupta
