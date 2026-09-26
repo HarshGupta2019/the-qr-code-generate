@@ -8,7 +8,7 @@ interface SEOHeadProps {
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
   config,
-  canonicalBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://the-qrcode-generator.com',
+  canonicalBaseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://the-qr-code-generate.vercel.app',
 }) => {
   useEffect(() => {
     // 1. Update Title

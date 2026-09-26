@@ -282,7 +282,7 @@ export function formatQrPayload(
     }
 
     default:
-      return 'https://www.the-qrcode-generator.com';
+      return 'https://www.the-qr-code-generate.vercel.app';
   }
 }
 
@@ -879,7 +879,7 @@ export async function downloadQrPdf(
 
   pdf.setFontSize(9);
   pdf.setTextColor(148, 163, 184);
-  pdf.text('Created with The QR Code Generate • https://the-qrcode-generator.com', pageWidth / 2, 285, {
+  pdf.text('Created with The QR Code Generate • https://the-qr-code-generate.vercel.app', pageWidth / 2, 285, {
     align: 'center',
   });
 

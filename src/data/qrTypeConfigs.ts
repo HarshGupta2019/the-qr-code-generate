@@ -753,7 +753,7 @@ export const QR_TYPE_CONFIGS: Record<QrDataType, QRTypeConfig> = {
         answer: 'Yes, you can upload any custom platform logo or brand icon to be displayed in the center of your social QR code.',
       },
     ],
-    defaultPayloadHint: 'https://the-qrcode-generator.com/social',
+    defaultPayloadHint: 'https://the-qr-code-generate.vercel.app/social',
   },
   app: {
     type: 'app',

@@ -31,7 +31,7 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
   const [isPrintOpen, setIsPrintOpen] = useState(false);
   const [isDynamicModalOpen, setIsDynamicModalOpen] = useState(false);
 
-  const qrGen = useQRGenerator('url');
+  const qrGen = useQRGenerator('text');
 
   const currentConfig = QR_TYPE_CONFIGS[qrGen.selectedType];
 

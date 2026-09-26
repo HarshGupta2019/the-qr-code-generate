@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://the-qrcode-generator.com/sitemap.xml
+Sitemap: https://the-qr-code-generate.vercel.app/sitemap.xml

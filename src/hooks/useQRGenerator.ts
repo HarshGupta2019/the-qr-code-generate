@@ -17,13 +17,13 @@ import {
 } from '../types';
 import { DEFAULT_STYLE_OPTIONS, formatQrPayload, parseWifiQrString } from '../utils/qrUtils';
 
-export function useQRGenerator(initialType: QrDataType = 'url') {
+export function useQRGenerator(initialType: QrDataType = 'text') {
   const [selectedType, setSelectedType] = useState<QrDataType>(initialType);
 
   // Form State Data
-  const [url, setUrl] = useState('https://www.the-qrcode-generator.com');
+  const [url, setUrl] = useState('https://www.the-qr-code-generate.vercel.app');
   const [isDynamic, setIsDynamic] = useState(false);
-  const [text, setText] = useState('Welcome to The QR Code Generate! Scan to discover endless possibilities.');
+  const [text, setText] = useState('');
   const [vcard, setVcard] = useState<VCardData>({
     firstName: 'Sarah',
     lastName: 'Connor',
@@ -32,7 +32,7 @@ export function useQRGenerator(initialType: QrDataType = 'url') {
     phoneCell: '+1 (555) 019-2834',
     phoneWork: '+1 (555) 019-2800',
     email: 'sarah.connor@example.com',
-    url: 'https://the-qrcode-generator.com',
+    url: 'https://the-qr-code-generate.vercel.app',
     street: '100 Silicon Way',
     city: 'San Francisco',
     state: 'CA',
@@ -52,7 +52,7 @@ export function useQRGenerator(initialType: QrDataType = 'url') {
     message: 'Hello! I scanned your QR code and would like more details.',
   });
   const [email, setEmail] = useState<EmailData>({
-    email: 'hello@the-qrcode-generator.com',
+    email: 'hello@the-qr-code-generate.vercel.app',
     subject: 'Project Inquiry via QR Code',
     body: 'Hi team, I would like to get a quote regarding...',
   });
@@ -87,7 +87,7 @@ export function useQRGenerator(initialType: QrDataType = 'url') {
     title: 'Alex Rivers • Creator & Designer',
     bio: 'Follow along for daily tech tutorials and design inspiration',
     links: [
-      { platform: 'website', url: 'https://the-qrcode-generator.com' },
+      { platform: 'website', url: 'https://the-qr-code-generate.vercel.app' },
       { platform: 'instagram', url: 'https://instagram.com' },
       { platform: 'twitter', url: 'https://x.com' },
       { platform: 'youtube', url: 'https://youtube.com' },
@@ -97,7 +97,7 @@ export function useQRGenerator(initialType: QrDataType = 'url') {
     appName: 'The QR Code App',
     iosUrl: 'https://apps.apple.com/app/id123456789',
     androidUrl: 'https://play.google.com/store/apps/details?id=com.theqrcodegenerate.app',
-    fallbackUrl: 'https://the-qrcode-generator.com',
+    fallbackUrl: 'https://the-qr-code-generate.vercel.app',
   });
   const [payment, setPayment] = useState<PaymentData>({
     provider: 'paypal',
