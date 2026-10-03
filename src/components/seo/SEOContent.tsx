@@ -11,7 +11,7 @@ import {
   ArrowRight,
   ShieldCheck,
 } from 'lucide-react';
-import { AdPlaceholder } from '../ads/AdPlaceholder';
+import { AdsterraNativeBanner } from '../ads/AdsterraNativeBanner';
 
 interface SEOContentProps {
   config: QRTypeConfig;
@@ -117,12 +117,7 @@ export const SEOContent: React.FC<SEOContentProps> = ({ config }) => {
         </div>
       </section>
 
-      {/* In-content safe Ad Slot (well below generator flow) */}
-      <AdPlaceholder
-        slotId={`ad-content-${config.slug}`}
-        format="horizontal"
-        className="my-8"
-      />
+      <AdsterraNativeBanner />
 
       {/* 4. Benefits & Features */}
       <section className="bg-white/90 dark:bg-slate-900/90 rounded-2xl p-6 sm:p-8 border border-sky-200/80 dark:border-slate-800 shadow-sm">

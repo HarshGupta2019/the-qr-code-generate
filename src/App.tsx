@@ -5,6 +5,8 @@ import { QRCodePage } from './components/QRCodePage';
 import { ScrollToTop } from './components/ScrollToTop';
 import { PDF_QR_CONFIG, QR_TYPE_CONFIGS } from './data/qrTypeConfigs';
 import { InformationPage } from './components/InformationPage';
+import { AdsterraPopunder } from './components/ads/AdsterraPopunder';
+import { AdsterraSocialBar } from './components/ads/AdsterraSocialBar';
 
 export function App() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -28,6 +30,8 @@ export function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <AdsterraPopunder />
+      <AdsterraSocialBar />
       <Routes>
         <Route path="/about" element={<InformationPage kind="about" darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/contact" element={<InformationPage kind="contact" darkMode={darkMode} setDarkMode={setDarkMode} />} />

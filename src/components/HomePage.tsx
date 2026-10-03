@@ -13,7 +13,8 @@ import { PrintModal } from './PrintModal';
 import { DynamicQrModal } from './DynamicQrModal';
 import { FaqSection } from './FaqSection';
 import { RelatedQRTools } from './seo/RelatedQRTools';
-import { AdPlaceholder } from './ads/AdPlaceholder';
+import { AdsterraBanner } from './ads/AdsterraBanner';
+import { AdsterraNativeBanner } from './ads/AdsterraNativeBanner';
 import { Quote, Sparkles, ArrowRight } from 'lucide-react';
 import { QR_TYPE_CONFIGS } from '../data/qrTypeConfigs';
 import { Link } from 'react-router-dom';
@@ -146,9 +147,8 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
             />
 
             {/* SAFE AD PLACEMENT: STRICTLY AFTER THE COMPLETE GENERATOR FLOW */}
-            <AdPlaceholder
+            <AdsterraBanner
               slotId="ad-home-post-generator"
-              format="horizontal"
               className="mt-8 mb-4"
             />
 
@@ -176,6 +176,7 @@ export const HomePage: React.FC<HomePageProps> = ({ darkMode, setDarkMode }) => 
 
             {/* Explore All 14 Dedicated Generator Pages */}
             <RelatedQRTools currentType={qrGen.selectedType} />
+            <AdsterraNativeBanner />
 
             {/* FAQ & Guidelines Section */}
             <FaqSection />

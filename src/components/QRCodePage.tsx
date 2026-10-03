@@ -7,7 +7,7 @@ import { SEOHead } from './seo/SEOHead';
 import { Breadcrumb } from './seo/Breadcrumb';
 import { SEOContent } from './seo/SEOContent';
 import { RelatedQRTools } from './seo/RelatedQRTools';
-import { AdPlaceholder } from './ads/AdPlaceholder';
+import { AdsterraBanner } from './ads/AdsterraBanner';
 import { QRCodeWorkspace } from './QRCodeWorkspace';
 import { QrScannerModal } from './QrScannerModal';
 import { PrintModal } from './PrintModal';
@@ -129,9 +129,8 @@ export const QRCodePage: React.FC<QRCodePageProps> = ({
         />
 
         {/* 4. AD PLACEMENT: STRICTLY AFTER THE COMPLETE GENERATOR FLOW */}
-        <AdPlaceholder
+        <AdsterraBanner
           slotId={`ad-post-generator-${config.slug}`}
-          format="horizontal"
           className="mt-10 mb-4"
         />
 
